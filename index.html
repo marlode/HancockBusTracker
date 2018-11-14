@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style type="text/css">
+    #center, h1 {
+    text-align:center;
+}
+</style>
+    <title> </title>
+</head>
+
+<body>
+
+<h1> Hello Hancock! This is 53A for 54th and Pulaski! </h1>
+
+<div id="center">
+</div>
+ 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src=""></script>
+    <script>
+    
+        var corsAnywhereUrl = "https://cors-anywhere.herokuapp.com/";
+
+        var ctaUrlNorth = "http://www.ctabustracker.com/bustime/api/v2/getpredictions?key=CHF2b2UMXRiDvpLTaV7efdUQb&format=json&stpid=12930,12851";
+
+        var url = corsAnywhereUrl + ctaUrlNorth;
+        
+        $.get(url).done(function(response) {
+            
+            data =  response["bustime-response"]["prd"];
+    
+            $("#center").append("Retrieved:" + data[0].tmstmp + "<hr>")
+    
+        data.sort(function(a,b) {
+            if (a.stpid > b.stpid) return -1;
+            if (a.stpid < b.stpid) return 1;
+
+            if (parseInt(a.prdctdn) > parseInt(b.prdctdn)) return 1;
+            if (parseInt(a.prdctdn) < parseInt(b.prdctdn)) return -1;
+        });
+            
+            //console.log(response);
+            //console.log(response["bustime-response"]["prd"]);
+             $.each(data, function(i,v) {
+             console.log(v)
+             if ( i > 0 && data[i].rtdir != data[i-1].rtdir) {
+                  $("#center").append("<hr>")
+             } 
+                              $("#center").append(v.prdctdn + " " + v.rtdir + "<br>")
+             })
+            
+        });
+        
+    </script>
+
+</body>
+
+</html>
